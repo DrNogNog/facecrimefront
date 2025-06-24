@@ -1,7 +1,6 @@
 // FaceCheck.ID Clone - TypeScript Version (Using React)
 import React, { useRef, useState } from 'react';
 import '../App.css';
-import { FaCheckCircle } from "react-icons/fa";
 import CameraModal from './CameraModal';
 import Pica from 'pica';
 import { toast } from 'sonner';
@@ -12,6 +11,18 @@ interface CameraCaptureProps {
   onImageCapture: (image: string) => void;
 }
 
+// Create a simple check icon component
+const CheckIcon: React.FC = () => (
+  <svg 
+    width="16" 
+    height="16" 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+  </svg>
+);
 
 const Navbar: React.FC<CameraCaptureProps> = ({ onImageCapture }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -114,15 +125,23 @@ const Navbar: React.FC<CameraCaptureProps> = ({ onImageCapture }) => {
           
         </div>
         <div className="categories-wrapper">
-          <div className="firstcategories checklist-text">
-            <span className="blue-text"><FaCheckCircle/></span><p>Social Media</p>
-            <span className="blue-text"><FaCheckCircle/></span><p>Sex Offenders</p>
-            <span className="blue-text"><FaCheckCircle/></span><p>Mugshots</p>
+          <div className="category-item">
+            <span className="blue-text"><CheckIcon /></span><p>Social Media</p>
           </div>
-          <div className="secondcategories checklist-text">
-            <span className="blue-text"><FaCheckCircle/></span><p>Scammers</p>
-            <span className="blue-text"><FaCheckCircle/></span><p>Videos</p>
-            <span className="blue-text"><FaCheckCircle/></span><p>News & Blogs</p>
+          <div className="category-item">
+            <span className="blue-text"><CheckIcon /></span><p>Sex Offenders</p>
+          </div>
+          <div className="category-item">
+            <span className="blue-text"><CheckIcon /></span><p>Mugshots</p>
+          </div>
+          <div className="category-item">
+            <span className="blue-text"><CheckIcon /></span><p>Scammers</p>
+          </div>
+          <div className="category-item">
+            <span className="blue-text"><CheckIcon /></span><p>Videos</p>
+          </div>
+          <div className="category-item">
+            <span className="blue-text"><CheckIcon /></span><p>News & Blogs</p>
           </div>
         </div>
         <button className="search-button">Search Internet by Face</button>
