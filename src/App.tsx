@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Navbar from './components/Navbar';
+import { toast } from 'sonner';
+import { recognizeFace, RecognitionResult as RecognitionData } from './services/recognitionApi';
+import RecognitionResult from './components/RecognitionResult';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+const App: React.FC = () => {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [recognitionResult, setRecognitionResult] = useState<RecognitionData | null>(null);
+  const [showResult, setShowResult] = useState(false);
+
+  const handleImageCapture = async (image: string) => {
+    setRecognitionResult(null);
+    setShowResult(false);
+    
+    // Automatically submit for recognition
+    try {
+      setIsProcessing(true);
+      
+      // Extract base64 string from data URL if needed
+      const base64Image = image.split(',')[1] || image;
+      
+      const result = await recognizeFace(base64Image);
+      setRecognitionResult(result);
+      setShowResult(true);
+      toast.success("Recognition complete.");
+    } catch (error) {
+      console.error("Recognition error:", error);
+      toast.error("Recognition failed. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+  
+  return !showResult ? (
+    <Navbar onImageCapture={handleImageCapture} />
+  ) : (
+    <RecognitionResult subject={recognitionResult} isLoading={isProcessing} />
   );
-}
+};
 
 export default App;
